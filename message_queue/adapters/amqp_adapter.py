@@ -216,7 +216,10 @@ class AMQPAdapter(BaseAdapter):
         """
         self.queue = queue
         self.channel.exchange_declare(
-            exchange=exchange, exchange_type=exchange_type)
+            exchange=exchange, 
+            exchange_type=exchange_type,
+            durable=True,
+        )
 
         self.channel.queue_declare(
             queue=self.queue,
