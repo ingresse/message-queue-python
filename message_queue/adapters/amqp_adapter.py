@@ -85,7 +85,8 @@ class AMQPAdapter(BaseAdapter):
 
             self.channel.exchange_declare(
                 exchange      = self.queue,
-                exchange_type = kwargs.get('exchange_type', 'fanout')
+                exchange_type = kwargs.get('exchange_type', 'fanout'),
+                durable       = kwargs.get('durable', True),
             )
 
             LOGGER.debug('Exchange configured: exchange=%r', self.queue)
