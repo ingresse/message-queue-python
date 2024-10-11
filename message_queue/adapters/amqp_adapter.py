@@ -6,6 +6,7 @@ Publish and subscribe to queues and exchanges in RabbitMQ
 import pika
 import functools
 import threading
+import ssl
 
 from message_queue import logger
 from message_queue.adapters import BaseAdapter
@@ -30,6 +31,12 @@ class AMQPAdapter(BaseAdapter):
         self.queue = None
         self._host = host
         self._credentials = pika.PlainCredentials(user, password)
+
+        if port == 5671:
+            ssl_context = ssl.create_default_context()
+            ssl_options = pika.SSLOptions(ssl_context, host)
+
+            self._parameters = pika.ConnectionParameters(host, port, vhost, self._credentials,  ssl_options=ssl_options)
         self._parameters = pika.ConnectionParameters(host, port, vhost, self._credentials)
 
         self.connect()
@@ -216,7 +223,10 @@ class AMQPAdapter(BaseAdapter):
         """
         self.queue = queue
         self.channel.exchange_declare(
-            exchange=exchange, exchange_type=exchange_type)
+            exchange=exchange, 
+            exchange_type=exchange_type,
+            durable=True,
+        )
 
         self.channel.queue_declare(
             queue=self.queue,
