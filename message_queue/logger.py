@@ -9,6 +9,7 @@ def get(name):
 
     """
     logger  = logging.getLogger(name)
+    logger.setLevel(logging.WARNING)
     handler = logging.StreamHandler()
 
     handler.setFormatter(
