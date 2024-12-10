@@ -126,6 +126,9 @@ class AMQPAdapter(BaseAdapter):
         exchange = message['properties'].get('exchange', '')
         delivery_mode = message['properties'].get('delivery_mode', 2)
         correlation_id = message['properties'].get('correlation_id', None)
+        headers = message['properties'].get('headers', None)
+        expiration = message['properties'].get('expiration', None)
+        message_id = message['properties'].get('message_id', None)
 
         _message = {}
         _message['body'] = message['body']
@@ -135,6 +138,9 @@ class AMQPAdapter(BaseAdapter):
             content_type='application/json',
             delivery_mode=delivery_mode,
             correlation_id=correlation_id,
+            headers=headers,
+            expiration=expiration,
+            message_id=message_id,
         )
 
         LOGGER.debug('AMQP Message: %r ', _message)
